@@ -22,15 +22,18 @@ df.columns
 df.head()
 def categorize_col(df, col, labels):
     edges = [df[col].describe()['min'],
-df[col].describe()['25%'],
-df[col].describe()['50%'],
-   df[col].describe()['75%'],
-    df[col].describe()['max']]
+             df[col].describe()['25%'],
+             df[col].describe()['50%'],
+             df[col].describe()['75%'],
+             df[col].describe()['max']]
+    
+    df[col] = pd.cut(df[col], edges, labels=labels, duplicates='drop')
+    return df
 
 
 
 labels = ['not_popular', 'below_avg', 'average', 'popular']
-catigorize_col(df, 'Vote_Average', labels)
+categorize_col(df, 'Vote_Average', labels)
 df['Vote_Average'].unique()
 df['Vote_Average'].value_counts()
 df.dropna(inplace = True)
@@ -57,4 +60,9 @@ sns.catplot(y = 'Vote_Average', data = df, kind = 'count',
 order = df['Vote_Average'].value_counts().index,
 color = '#4287f5')
 plt.title('votes destribution')
+plt.show()
+df[df['Popularity'] == df['Popularity'].max()]
+df[df['Popularity'] == df['Popularity'].min()]
+df['Release_Date'].hist()
+plt.title('Release_Date column distribution')
 plt.show()
